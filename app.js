@@ -33,8 +33,11 @@ async function loadData() {
 
 
 function updateStats() {
-  document.getElementById('stat-total').textContent = allRequests.length;
-  document.getElementById('stat-new').textContent   = allRequests.filter(r => r['지속사업여부'] === '신규사업').length;
+  // 전체 신청 = 신청 목록 + 완료 목록 합계 (누적)
+  document.getElementById('stat-total').textContent = allRequests.length + allCompletes.length;
+  // 현재 신청 = 신청 목록 건수
+  document.getElementById('stat-request').textContent = allRequests.length;
+  // 완료 = 완료 목록 건수
   document.getElementById('stat-done').textContent  = allCompletes.length;
   document.getElementById('cnt-request').textContent  = allRequests.length;
   document.getElementById('cnt-complete').textContent = allCompletes.length;
@@ -684,9 +687,9 @@ function showUploadPreview(requests, completes) {
         <div style="font-size:11px;font-weight:600;color:var(--text3)">신청목록</div>
         <button onclick="toggleAllReq()" style="font-size:11px;padding:3px 8px;border:1px solid var(--border);border-radius:4px;background:var(--surface);cursor:pointer">전체 선택/해제</button>
       </div>
-    <div style="overflow-x:auto;max-height:200px;overflow-y:auto">
+    <div class="preview-table-wrap" style="max-height:200px;overflow-y:auto">
       <table class="preview-table">
-        <thead><tr><th style="width:30px"></th><th>사업부서</th><th>담당자</th><th>신청항목</th><th>사업명</th></tr></thead>
+        <thead><tr><th style="width:30px;position:sticky;top:0;background:var(--surface2);z-index:1"></th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업부서</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">담당자</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">신청항목</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업명</th></tr></thead>
         <tbody>${requests.map((r, i) => {
           const dupStyle = r._isDup ? 'background:#ffe6e6' : '';
           const dupLabel = r._isDup ? '<span style="color:var(--danger);font-size:10px;font-weight:600;margin-left:4px">중복</span>' : '';
@@ -708,9 +711,9 @@ function showUploadPreview(requests, completes) {
         <div style="font-size:11px;font-weight:600;color:var(--text3)">완료목록</div>
         <button onclick="toggleAllComp()" style="font-size:11px;padding:3px 8px;border:1px solid var(--border);border-radius:4px;background:var(--surface);cursor:pointer">전체 선택/해제</button>
       </div>
-    <div style="overflow-x:auto;max-height:200px;overflow-y:auto">
+    <div class="preview-table-wrap" style="max-height:200px;overflow-y:auto">
       <table class="preview-table">
-        <thead><tr><th style="width:30px"></th><th>사업부서</th><th>담당자</th><th>사업명</th><th>홈페이지</th></tr></thead>
+        <thead><tr><th style="width:30px;position:sticky;top:0;background:var(--surface2);z-index:1"></th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업부서</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">담당자</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업명</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">홈페이지</th></tr></thead>
         <tbody>${completes.map((c, i) => {
           const dupStyle = c._isDup ? 'background:#ffe6e6' : '';
           const dupLabel = c._isDup ? '<span style="color:var(--danger);font-size:10px;font-weight:600;margin-left:4px">중복</span>' : '';
