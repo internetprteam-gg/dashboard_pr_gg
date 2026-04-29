@@ -441,6 +441,167 @@
   </div>
 </div>
 
+<!-- Modal: 신청 수정 -->
+<div class="modal-overlay" id="modal-edit-request">
+  <div class="modal" style="width:600px">
+    <div class="modal-header">
+      <span class="modal-title">신청 수정</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-request')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">사업부서 <span>*</span></label>
+          <input class="form-input" id="edit-f-dept">
+        </div>
+        <div class="form-group">
+          <label class="form-label">담당자 <span>*</span></label>
+          <input class="form-input" id="edit-f-person">
+        </div>
+        <div class="form-group">
+          <label class="form-label">내선번호</label>
+          <input class="form-input" id="edit-f-tel" placeholder="뒷 4자리">
+        </div>
+        <div class="form-group">
+          <label class="form-label">사업 구분</label>
+          <select class="form-select" id="edit-f-biz-type">
+            <option>계속사업</option>
+            <option>신규사업</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">신청 매체 <span>*</span></label>
+          <div class="media-check-grid" id="edit-media-checks">
+            <label class="media-check-label"><input type="checkbox" value="홈페이지 배너" onchange="toggleChip(this)"> 홈페이지 배너</label>
+            <label class="media-check-label"><input type="checkbox" value="브랜드검색 광고" onchange="toggleChip(this)"> 브랜드검색 광고</label>
+            <label class="media-check-label"><input type="checkbox" value="경기도 뉴스레터" onchange="toggleChip(this)"> 경기도 뉴스레터</label>
+            <label class="media-check-label"><input type="checkbox" value="당근마켓" onchange="toggleChip(this)"> 당근마켓</label>
+            <label class="media-check-label"><input type="checkbox" value="e알리미" onchange="toggleChip(this)"> e알리미</label>
+            <label class="media-check-label"><input type="checkbox" value="경기지역화폐" onchange="toggleChip(this)"> 경기지역화폐</label>
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">신청사유</label>
+          <select class="form-select" id="edit-f-reason">
+            <option value="">선택</option>
+            <option>신규사업 시작</option>
+            <option>모집기간 도래</option>
+            <option>정부부처 홍보 요청</option>
+            <option>기타</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">사업명 <span>*</span></label>
+          <input class="form-input" id="edit-f-name">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">사업 내용</label>
+          <textarea class="form-textarea" id="edit-f-content"></textarea>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">랜딩페이지 URL</label>
+          <input class="form-input" id="edit-f-url" placeholder="https://...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">송출 요청 기간</label>
+          <input class="form-input" id="edit-f-period" placeholder="예: 26.05.01~05.31.">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-edit-request')">취소</button>
+      <button class="btn-primary" onclick="submitEditRequest()">저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: 완료 액션 -->
+<div class="modal-overlay" id="modal-complete-actions">
+  <div class="modal" style="width:400px">
+    <div class="modal-header">
+      <span class="modal-title">작업 선택</span>
+      <button class="modal-close" onclick="closeModal('modal-complete-actions')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn-primary" onclick="openEditComplete()" style="justify-content:center;width:100%">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg>
+          수정
+        </button>
+        <button class="btn-delete" onclick="deleteComplete()" style="justify-content:center;width:100%">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
+          삭제
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: 완료 수정 -->
+<div class="modal-overlay" id="modal-edit-complete">
+  <div class="modal" style="width:600px">
+    <div class="modal-header">
+      <span class="modal-title">완료 수정</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-complete')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">사업부서 <span>*</span></label>
+          <input class="form-input" id="edit-c-dept">
+        </div>
+        <div class="form-group">
+          <label class="form-label">담당자 <span>*</span></label>
+          <input class="form-input" id="edit-c-person">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">내선번호</label>
+          <input class="form-input" id="edit-c-tel" placeholder="뒷 4자리">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">사업명 <span>*</span></label>
+          <input class="form-input" id="edit-c-name">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">랜딩페이지 URL</label>
+          <input class="form-input" id="edit-c-url" placeholder="https://...">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">송출일시 (6개 매체)</label>
+        </div>
+        <div class="form-group">
+          <label class="form-label">홈페이지 배너</label>
+          <input class="form-input" id="edit-c-m1" placeholder="26.04.20.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">브랜드검색 광고</label>
+          <input class="form-input" id="edit-c-m2" placeholder="26.04.20.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">경기도 뉴스레터</label>
+          <input class="form-input" id="edit-c-m3" placeholder="26.04.20.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">당근마켓</label>
+          <input class="form-input" id="edit-c-m4" placeholder="26.04.20.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">e알리미</label>
+          <input class="form-input" id="edit-c-m5" placeholder="26.04.20.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">경기지역화폐</label>
+          <input class="form-input" id="edit-c-m6" placeholder="26.04.20.">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('modal-edit-complete')">취소</button>
+      <button class="btn-primary" onclick="submitEditComplete()">저장</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
