@@ -132,15 +132,15 @@ function renderRequest() {
             <div class="expand-label">사업 내용</div>
             <div class="expand-text">${hasContent ? escHtml(String(r['사업내용'])) : '(내용 없음)'}</div>
             <div style="display:flex;gap:8px;margin-top:14px">
-              <button class="btn-complete-transfer" onclick="event.stopPropagation();openCompleteTransfer(${i})">
+              <button class="btn-complete-transfer" onclick="event.stopPropagation();openCompleteTransfer('${r.id}')">
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM2 2a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H2z"/><path d="M2.5 4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5V4z"/></svg>
                 완료 처리
               </button>
-              <button class="btn-edit" onclick="event.stopPropagation();openEditRequest(${i})">
+              <button class="btn-edit" onclick="event.stopPropagation();openEditRequest('${r.id}')">
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/></svg>
                 수정
               </button>
-              <button class="btn-delete" onclick="event.stopPropagation();deleteRequest(${i})">
+              <button class="btn-delete" onclick="event.stopPropagation();deleteRequest('${r.id}')">
                 <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/><path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
                 삭제
               </button>
@@ -294,7 +294,7 @@ function renderComplete() {
       ? `<a class="link-btn" href="${escAttr(r['랜딩페이지'])}" target="_blank" onclick="event.stopPropagation()" title="랜딩페이지 열기">
            <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor"><path d="M10.604 1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1zM3.75 2A1.75 1.75 0 0 0 2 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0 0 14 12.25v-3.5a.75.75 0 0 0-1.5 0v3.5a.25.25 0 0 1-.25.25h-8.5a.25.25 0 0 1-.25-.25v-8.5a.25.25 0 0 1 .25-.25h3.5a.75.75 0 0 0 0-1.5h-3.5z"/></svg>
          </a>` : '';
-    return `<tr onclick="openCompleteActions(${i})" style="cursor:pointer">
+    return `<tr onclick="openCompleteActions('${r.id}')" style="cursor:pointer">
       <td class="col-dept">${escHtml(r['사업부서'] || '—')}</td>
       <td class="col-person">${escHtml(r['사업담당자'] || '—')}</td>
       <td class="col-tel">${formatTel(r['행정전화(뒷4자리)'] || r['행정전화'] || '')}</td>
@@ -865,25 +865,15 @@ function showToast(msg, type='') {
 function openUploadModal() { openModal('modal-upload'); }
 
 // ── 완료 처리 (신청→완료 이동) ────────────────────────
-let transferSourceIdx = -1;
+let transferSourceId = null;
 let currentPageReq = 1;
 let pageSizeReq = 20;
 let currentPageComp = 1;
 let pageSizeComp = 20;
 
-function openCompleteTransfer(idx) {
-  transferSourceIdx = idx;
-  const q  = document.getElementById('search-request').value.toLowerCase();
-  const fm = getSelectedMedia();
-  const ft = document.getElementById('filter-type').value;
-  const rows = allRequests.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    if (q && !text.includes(q)) return false;
-    if (fm.length > 0 && !fm.some(m => (r['신청항목'] || '').includes(m))) return false;
-    if (ft && r['지속사업여부'] !== ft) return false;
-    return true;
-  });
-  const r = rows[idx];
+function openCompleteTransfer(id) {
+  transferSourceId = id;
+  const r = allRequests.find(req => req.id == id);
   if (!r) return;
 
   document.getElementById('tr-dept-view').textContent = r['사업부서'] || '—';
@@ -894,18 +884,8 @@ function openCompleteTransfer(idx) {
 }
 
 async function submitTransfer() {
-  if (transferSourceIdx === -1) return;
-  const q  = document.getElementById('search-request').value.toLowerCase();
-  const fm = getSelectedMedia();
-  const ft = document.getElementById('filter-type').value;
-  const rows = allRequests.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    if (q && !text.includes(q)) return false;
-    if (fm.length > 0 && !fm.some(m => (r['신청항목'] || '').includes(m))) return false;
-    if (ft && r['지속사업여부'] !== ft) return false;
-    return true;
-  });
-  const r = rows[transferSourceIdx];
+  if (!transferSourceId) return;
+  const r = allRequests.find(req => req.id == transferSourceId);
   if (!r) return;
 
   await postData({
@@ -923,7 +903,7 @@ async function submitTransfer() {
     '송출일시_경기지역화폐': document.getElementById('tr-m6').value.trim(),
   });
   closeModal('modal-transfer');
-  transferSourceIdx = -1;
+  transferSourceId = null;
   showToast('완료 목록에 추가되었습니다', 'success');
   // 데이터 저장 완료를 위해 약간의 지연 후 로드
   setTimeout(() => loadData(), 500);
@@ -1123,21 +1103,11 @@ function getLatestCompletionDate(record) {
 }
 
 // ── 신청 수정/삭제 ──────────────────────────────────
-let editRequestIdx = -1;
+let editRequestId = null;
 
-function openEditRequest(idx) {
-  editRequestIdx = idx;
-  const q  = document.getElementById('search-request').value.toLowerCase();
-  const fm = getSelectedMedia();
-  const ft = document.getElementById('filter-type').value;
-  const rows = allRequests.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    if (q && !text.includes(q)) return false;
-    if (fm.length > 0 && !fm.some(m => (r['신청항목'] || '').includes(m))) return false;
-    if (ft && r['지속사업여부'] !== ft) return false;
-    return true;
-  });
-  const r = rows[idx];
+function openEditRequest(id) {
+  editRequestId = id;
+  const r = allRequests.find(req => req.id == id);
   if (!r) return;
 
   document.getElementById('edit-f-dept').value = r['사업부서'] || '';
@@ -1160,18 +1130,8 @@ function openEditRequest(idx) {
 }
 
 async function submitEditRequest() {
-  if (editRequestIdx === -1) return;
-  const q  = document.getElementById('search-request').value.toLowerCase();
-  const fm = getSelectedMedia();
-  const ft = document.getElementById('filter-type').value;
-  const rows = allRequests.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    if (q && !text.includes(q)) return false;
-    if (fm.length > 0 && !fm.some(m => (r['신청항목'] || '').includes(m))) return false;
-    if (ft && r['지속사업여부'] !== ft) return false;
-    return true;
-  });
-  const r = rows[editRequestIdx];
+  if (!editRequestId) return;
+  const r = allRequests.find(req => req.id == editRequestId);
   if (!r) return;
 
   const checked = [...document.querySelectorAll('#edit-media-checks input:checked')].map(c => c.value);
@@ -1201,23 +1161,13 @@ async function submitEditRequest() {
   });
 
   closeModal('modal-edit-request');
-  editRequestIdx = -1;
+  editRequestId = null;
   showToast('수정되었습니다', 'success');
   setTimeout(() => loadData(), 500);
 }
 
-async function deleteRequest(idx) {
-  const q  = document.getElementById('search-request').value.toLowerCase();
-  const fm = getSelectedMedia();
-  const ft = document.getElementById('filter-type').value;
-  const rows = allRequests.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    if (q && !text.includes(q)) return false;
-    if (fm.length > 0 && !fm.some(m => (r['신청항목'] || '').includes(m))) return false;
-    if (ft && r['지속사업여부'] !== ft) return false;
-    return true;
-  });
-  const r = rows[idx];
+async function deleteRequest(id) {
+  const r = allRequests.find(req => req.id == id);
   if (!r) return;
 
   if (!confirm(`"${r['사업명']}" 신청을 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)) return;
@@ -1233,22 +1183,17 @@ async function deleteRequest(idx) {
 }
 
 // ── 완료 수정/삭제 ──────────────────────────────────
-let editCompleteIdx = -1;
+let editCompleteId = null;
 
-function openCompleteActions(idx) {
-  editCompleteIdx = idx;
+function openCompleteActions(id) {
+  editCompleteId = id;
   openModal('modal-complete-actions');
 }
 
 function openEditComplete() {
   closeModal('modal-complete-actions');
   
-  const q = document.getElementById('search-complete').value.toLowerCase();
-  const rows = allCompletes.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    return !q || text.includes(q);
-  });
-  const r = rows[editCompleteIdx];
+  const r = allCompletes.find(comp => comp.id == editCompleteId);
   if (!r) return;
 
   document.getElementById('edit-c-dept').value = r['사업부서'] || '';
@@ -1267,13 +1212,8 @@ function openEditComplete() {
 }
 
 async function submitEditComplete() {
-  if (editCompleteIdx === -1) return;
-  const q = document.getElementById('search-complete').value.toLowerCase();
-  const rows = allCompletes.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    return !q || text.includes(q);
-  });
-  const r = rows[editCompleteIdx];
+  if (!editCompleteId) return;
+  const r = allCompletes.find(comp => comp.id == editCompleteId);
   if (!r) return;
 
   const dept = document.getElementById('edit-c-dept').value.trim();
@@ -1303,7 +1243,7 @@ async function submitEditComplete() {
   });
 
   closeModal('modal-edit-complete');
-  editCompleteIdx = -1;
+  editCompleteId = null;
   showToast('수정되었습니다', 'success');
   setTimeout(() => loadData(), 500);
 }
@@ -1311,16 +1251,11 @@ async function submitEditComplete() {
 async function deleteComplete() {
   closeModal('modal-complete-actions');
   
-  const q = document.getElementById('search-complete').value.toLowerCase();
-  const rows = allCompletes.filter(r => {
-    const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
-    return !q || text.includes(q);
-  });
-  const r = rows[editCompleteIdx];
+  const r = allCompletes.find(comp => comp.id == editCompleteId);
   if (!r) return;
 
   if (!confirm(`"${r['사업명']}" 완료 항목을 삭제하시겠습니까?\n\n이 작업은 되돌릴 수 없습니다.`)) {
-    editCompleteIdx = -1;
+    editCompleteId = null;
     return;
   }
 
@@ -1330,7 +1265,7 @@ async function deleteComplete() {
     id: r.id
   });
 
-  editCompleteIdx = -1;
+  editCompleteId = null;
   showToast('삭제되었습니다', 'success');
   setTimeout(() => loadData(), 500);
 }
