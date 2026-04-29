@@ -441,7 +441,8 @@ async function submitRequest() {
     c.closest('label').classList.remove('checked');
   });
   showToast('신청이 등록되었습니다', 'success');
-  await loadData();
+  // 데이터 저장 완료를 위해 약간의 지연 후 로드
+  setTimeout(() => loadData(), 500);
 }
 
 // ── 완료 등록 ──────────────────────────────────────
@@ -468,7 +469,8 @@ async function submitComplete() {
   closeModal('modal-complete');
   resetFields(['c-dept','c-person','c-tel','c-name','c-url','c-m1','c-m2','c-m3','c-m4','c-m5','c-m6']);
   showToast('완료 항목이 등록되었습니다', 'success');
-  await loadData();
+  // 데이터 저장 완료를 위해 약간의 지연 후 로드
+  setTimeout(() => loadData(), 500);
 }
 
 async function postData(params) {
@@ -819,7 +821,8 @@ async function importData() {
   msg += ' 저장 완료';
   
   showToast(msg, 'success');
-  await loadData();
+  // 데이터 저장 완료를 위해 약간의 지연 후 로드
+  setTimeout(() => loadData(), 500);
 }
 
 // ── 유틸 ───────────────────────────────────────────
@@ -912,7 +915,8 @@ async function submitTransfer() {
   closeModal('modal-transfer');
   transferSourceIdx = -1;
   showToast('완료 목록에 추가되었습니다', 'success');
-  await loadData();
+  // 데이터 저장 완료를 위해 약간의 지연 후 로드
+  setTimeout(() => loadData(), 500);
 }
 
 // ── 매체 필터 ──────────────────────────────────────
