@@ -441,7 +441,7 @@ async function submitRequest() {
     c.closest('label').classList.remove('checked');
   });
   showToast('신청이 등록되었습니다', 'success');
-  loadData();
+  await loadData();
 }
 
 // ── 완료 등록 ──────────────────────────────────────
@@ -468,7 +468,7 @@ async function submitComplete() {
   closeModal('modal-complete');
   resetFields(['c-dept','c-person','c-tel','c-name','c-url','c-m1','c-m2','c-m3','c-m4','c-m5','c-m6']);
   showToast('완료 항목이 등록되었습니다', 'success');
-  loadData();
+  await loadData();
 }
 
 async function postData(params) {
@@ -819,7 +819,7 @@ async function importData() {
   msg += ' 저장 완료';
   
   showToast(msg, 'success');
-  loadData();
+  await loadData();
 }
 
 // ── 유틸 ───────────────────────────────────────────
@@ -912,7 +912,7 @@ async function submitTransfer() {
   closeModal('modal-transfer');
   transferSourceIdx = -1;
   showToast('완료 목록에 추가되었습니다', 'success');
-  loadData();
+  await loadData();
 }
 
 // ── 매체 필터 ──────────────────────────────────────
