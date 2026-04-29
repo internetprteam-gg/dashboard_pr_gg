@@ -164,9 +164,10 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: visible;
   }
-  table { width: 100%; border-collapse: collapse; font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif !important; }
+  table { width: 100%; min-width: 800px; border-collapse: collapse; font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif !important; }
   table th, table td { font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif !important; }
   thead { background: var(--surface2); border-bottom: 2px solid var(--border); }
   th {
