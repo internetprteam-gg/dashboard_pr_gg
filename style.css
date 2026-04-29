@@ -448,7 +448,6 @@
 
   /* ── 완료처리 버튼 ── */
   .btn-complete-transfer {
-    margin-top: 14px;
     padding: 7px 14px;
     background: var(--accent2);
     color: #fff;
