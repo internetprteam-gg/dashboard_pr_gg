@@ -465,6 +465,40 @@
   }
   .btn-complete-transfer:hover { opacity: 0.88; }
 
+  .btn-edit {
+    padding: 7px 14px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-edit:hover { opacity: 0.88; }
+
+  .btn-delete {
+    padding: 7px 14px;
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-delete:hover { opacity: 0.88; }
+
   /* ── 페이지네이션 ── */
   .pagination {
     display: flex;
