@@ -65,6 +65,13 @@ function renderRequest() {
     return true;
   });
 
+  // 날짜 기준 최신순 정렬
+  rows.sort((a, b) => {
+    const dateA = parseDateForSort(a['송출요청기간']);
+    const dateB = parseDateForSort(b['송출요청기간']);
+    return dateB - dateA; // 최신순 (내림차순)
+  });
+
   const totalRows = rows.length;
   const totalPages = Math.ceil(totalRows / pageSizeReq);
   if (currentPageReq > totalPages && totalPages > 0) currentPageReq = totalPages;
@@ -241,6 +248,13 @@ function renderComplete() {
   let rows = allCompletes.filter(r => {
     const text = [r['사업부서'], r['사업담당자'], r['사업명']].join(' ').toLowerCase();
     return !q || text.includes(q);
+  });
+
+  // 날짜 기준 최신순 정렬 (여러 송출일시 중 가장 최근 날짜 기준)
+  rows.sort((a, b) => {
+    const dateA = getLatestCompletionDate(a);
+    const dateB = getLatestCompletionDate(b);
+    return dateB - dateA; // 최신순 (내림차순)
   });
 
   const totalRows = rows.length;
@@ -1003,6 +1017,47 @@ function downloadExcel() {
   XLSX.writeFile(wb, `매체홍보신청_${dateStr}.xlsx`);
   closeModal('modal-download');
   showToast('다운로드 완료', 'success');
+}
+
+// ── 날짜 정렬 유틸리티 ──────────────────────────────
+function parseDateForSort(dateStr) {
+  if (!dateStr) return new Date(0); // 날짜 없으면 가장 오래된 것으로
+  
+  // "YYYY-MM-DD ~ YYYY-MM-DD" 형식인 경우 시작 날짜 추출
+  const str = String(dateStr).trim();
+  const match = str.match(/(\d{4})[-.\/년\s]*(\d{1,2})[-.\/월\s]*(\d{1,2})/);
+  
+  if (match) {
+    const [_, year, month, day] = match;
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  }
+  
+  return new Date(0);
+}
+
+function getLatestCompletionDate(record) {
+  const dateFields = [
+    '송출일시_홈페이지배너',
+    '송출일시_브랜드검색광고',
+    '송출일시_경기도뉴스레터',
+    '송출일시_당근마켓',
+    '송출일시_e알리미',
+    '송출일시_경기지역화폐'
+  ];
+  
+  let latestDate = new Date(0);
+  
+  dateFields.forEach(field => {
+    const dateStr = record[field];
+    if (dateStr && dateStr.trim()) {
+      const date = parseDateForSort(dateStr);
+      if (date > latestDate) {
+        latestDate = date;
+      }
+    }
+  });
+  
+  return latestDate;
 }
 
 // ── 초기 로드 ──────────────────────────────────────
