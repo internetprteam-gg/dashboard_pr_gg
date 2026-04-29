@@ -118,9 +118,9 @@ function renderRequest() {
         <td class="col-dept">${escHtml(r['사업부서'] || '—')}</td>
         <td class="col-person">${escHtml(r['사업담당자'] || '—')}</td>
         <td class="col-tel">${formatTel(r['행정전화(뒷4자리)'] || r['행정전화'] || '')}</td>
+        <td class="col-name" style="font-weight:500">${escHtml(r['사업명'] || '—')}</td>
         <td class="col-media"><div class="media-chips">${chipsShort}</div></td>
         <td class="col-reason" style="color:var(--text2)">${escHtml(r['신청사유'] || '—')}</td>
-        <td class="col-name" style="font-weight:500">${escHtml(r['사업명'] || '—')}</td>
         <td class="col-link">${link}</td>
         <td class="col-period">${escHtml(normalizeDateFormat(r['송출요청기간']) || '—')}</td>
       </tr>
