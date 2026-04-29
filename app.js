@@ -273,9 +273,11 @@ function renderComplete() {
     return;
   }
 
-  const dateCell = v => v
-    ? `<span class="date-filled">${escHtml(v)}</span>`
-    : `<span class="date-empty">—</span>`;
+  const dateCell = v => {
+    if (!v) return `<span class="date-empty">—</span>`;
+    const formatted = formatDateToYYMMDD(v);
+    return `<span class="date-filled">${escHtml(formatted)}</span>`;
+  };
 
   tbody.innerHTML = pageRows.map(r => {
     const link = r['랜딩페이지']
@@ -1020,12 +1022,58 @@ function downloadExcel() {
 }
 
 // ── 날짜 정렬 유틸리티 ──────────────────────────────
+function formatDateToYYMMDD(dateStr) {
+  if (!dateStr) return '';
+  
+  const str = String(dateStr).trim();
+  
+  // 이미 "yy.mm.dd." 형식인지 확인
+  if (/^\d{2}\.\d{1,2}\.\d{1,2}\.?$/.test(str)) {
+    // "26.4.20" 또는 "26.4.20." 형식
+    const match = str.match(/(\d{2})\.(\d{1,2})\.(\d{1,2})/);
+    if (match) {
+      const [_, yy, m, d] = match;
+      const mm = m.padStart(2, '0');
+      const dd = d.padStart(2, '0');
+      return `${yy}.${mm}.${dd}.`;
+    }
+  }
+  
+  // "YYYY-MM-DD" 또는 "YYYY.MM.DD" 형식
+  let match = str.match(/(\d{4})[-.\/]*(\d{1,2})[-.\/]*(\d{1,2})/);
+  if (match) {
+    const [_, yyyy, m, d] = match;
+    const yy = yyyy.slice(-2); // 뒤 2자리만
+    const mm = m.padStart(2, '0');
+    const dd = d.padStart(2, '0');
+    return `${yy}.${mm}.${dd}.`;
+  }
+  
+  // 파싱 실패 시 원본 반환
+  return str;
+}
+
 function parseDateForSort(dateStr) {
   if (!dateStr) return new Date(0); // 날짜 없으면 가장 오래된 것으로
   
-  // "YYYY-MM-DD ~ YYYY-MM-DD" 형식인 경우 시작 날짜 추출
   const str = String(dateStr).trim();
-  const match = str.match(/(\d{4})[-.\/년\s]*(\d{1,2})[-.\/월\s]*(\d{1,2})/);
+  
+  // "26.4.20." 또는 "26.4.20" 형식 처리
+  let match = str.match(/(\d{2,4})[.\s]*(\d{1,2})[.\s]*(\d{1,2})/);
+  
+  if (match) {
+    let [_, year, month, day] = match;
+    
+    // 2자리 연도를 4자리로 변환 (26 -> 2026)
+    if (year.length === 2) {
+      year = '20' + year;
+    }
+    
+    return new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+  }
+  
+  // "YYYY-MM-DD ~ YYYY-MM-DD" 형식인 경우 시작 날짜 추출
+  match = str.match(/(\d{4})[-.\/년\s]*(\d{1,2})[-.\/월\s]*(\d{1,2})/);
   
   if (match) {
     const [_, year, month, day] = match;
