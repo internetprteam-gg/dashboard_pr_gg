@@ -463,18 +463,26 @@ async function submitComplete() {
   if (!dept || !person || !name) {
     showToast('필수 항목(부서, 담당자, 사업명)을 모두 입력해주세요', 'error'); return;
   }
+
+  // 날짜 포맷팅 (yy.mm.dd. 형식으로 변환)
+  const formatDate = (val) => {
+    const trimmed = val.trim();
+    if (!trimmed) return '';
+    return formatDateToYYMMDD(trimmed);
+  };
+
   await postData({
     action: 'addComplete', token: TOKEN,
     '사업부서': dept, '사업담당자': person,
     '행정전화(뒷4자리)': document.getElementById('c-tel').value.trim(),
     '사업명': name,
     '랜딩페이지': document.getElementById('c-url').value.trim(),
-    '송출일시_홈페이지배너':  document.getElementById('c-m1').value.trim(),
-    '송출일시_브랜드검색광고': document.getElementById('c-m2').value.trim(),
-    '송출일시_경기도뉴스레터': document.getElementById('c-m3').value.trim(),
-    '송출일시_당근마켓':      document.getElementById('c-m4').value.trim(),
-    '송출일시_e알리미':       document.getElementById('c-m5').value.trim(),
-    '송출일시_경기지역화폐':  document.getElementById('c-m6').value.trim(),
+    '송출일시_홈페이지배너':  formatDate(document.getElementById('c-m1').value),
+    '송출일시_브랜드검색광고': formatDate(document.getElementById('c-m2').value),
+    '송출일시_경기도뉴스레터': formatDate(document.getElementById('c-m3').value),
+    '송출일시_당근마켓':      formatDate(document.getElementById('c-m4').value),
+    '송출일시_e알리미':       formatDate(document.getElementById('c-m5').value),
+    '송출일시_경기지역화폐':  formatDate(document.getElementById('c-m6').value),
   });
   closeModal('modal-complete');
   resetFields(['c-dept','c-person','c-tel','c-name','c-url','c-m1','c-m2','c-m3','c-m4','c-m5','c-m6']);
@@ -888,6 +896,13 @@ async function submitTransfer() {
   const r = allRequests.find(req => req.id == transferSourceId);
   if (!r) return;
 
+  // 날짜 포맷팅 (yy.mm.dd. 형식으로 변환)
+  const formatDate = (val) => {
+    const trimmed = val.trim();
+    if (!trimmed) return '';
+    return formatDateToYYMMDD(trimmed);
+  };
+
   await postData({
     action: 'addComplete', token: TOKEN,
     '사업부서': r['사업부서'] || '',
@@ -895,12 +910,12 @@ async function submitTransfer() {
     '행정전화(뒷4자리)': r['행정전화(뒷4자리)'] || r['행정전화'] || '',
     '사업명': r['사업명'] || '',
     '랜딩페이지': r['랜딩페이지'] || '',
-    '송출일시_홈페이지배너': document.getElementById('tr-m1').value.trim(),
-    '송출일시_브랜드검색광고': document.getElementById('tr-m2').value.trim(),
-    '송출일시_경기도뉴스레터': document.getElementById('tr-m3').value.trim(),
-    '송출일시_당근마켓': document.getElementById('tr-m4').value.trim(),
-    '송출일시_e알리미': document.getElementById('tr-m5').value.trim(),
-    '송출일시_경기지역화폐': document.getElementById('tr-m6').value.trim(),
+    '송출일시_홈페이지배너': formatDate(document.getElementById('tr-m1').value),
+    '송출일시_브랜드검색광고': formatDate(document.getElementById('tr-m2').value),
+    '송출일시_경기도뉴스레터': formatDate(document.getElementById('tr-m3').value),
+    '송출일시_당근마켓': formatDate(document.getElementById('tr-m4').value),
+    '송출일시_e알리미': formatDate(document.getElementById('tr-m5').value),
+    '송출일시_경기지역화폐': formatDate(document.getElementById('tr-m6').value),
   });
   closeModal('modal-transfer');
   transferSourceId = null;
@@ -1225,6 +1240,13 @@ async function submitEditComplete() {
     return;
   }
 
+  // 날짜 포맷팅 (yy.mm.dd. 형식으로 변환)
+  const formatDate = (val) => {
+    const trimmed = val.trim();
+    if (!trimmed) return '';
+    return formatDateToYYMMDD(trimmed);
+  };
+
   await postData({
     action: 'updateComplete',
     token: TOKEN,
@@ -1234,12 +1256,12 @@ async function submitEditComplete() {
     '행정전화(뒷4자리)': document.getElementById('edit-c-tel').value.trim(),
     '사업명': name,
     '랜딩페이지': document.getElementById('edit-c-url').value.trim(),
-    '송출일시_홈페이지배너': document.getElementById('edit-c-m1').value.trim(),
-    '송출일시_브랜드검색광고': document.getElementById('edit-c-m2').value.trim(),
-    '송출일시_경기도뉴스레터': document.getElementById('edit-c-m3').value.trim(),
-    '송출일시_당근마켓': document.getElementById('edit-c-m4').value.trim(),
-    '송출일시_e알리미': document.getElementById('edit-c-m5').value.trim(),
-    '송출일시_경기지역화폐': document.getElementById('edit-c-m6').value.trim(),
+    '송출일시_홈페이지배너': formatDate(document.getElementById('edit-c-m1').value),
+    '송출일시_브랜드검색광고': formatDate(document.getElementById('edit-c-m2').value),
+    '송출일시_경기도뉴스레터': formatDate(document.getElementById('edit-c-m3').value),
+    '송출일시_당근마켓': formatDate(document.getElementById('edit-c-m4').value),
+    '송출일시_e알리미': formatDate(document.getElementById('edit-c-m5').value),
+    '송출일시_경기지역화폐': formatDate(document.getElementById('edit-c-m6').value),
   });
 
   closeModal('modal-edit-complete');
