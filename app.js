@@ -1036,6 +1036,41 @@ function formatDateToYYMMDD(dateStr) {
   
   const str = String(dateStr).trim();
   
+  // 범위 형식 처리 "26.4.14.~04.30." 또는 "26.4.14~04.30"
+  if (str.includes('~')) {
+    const parts = str.split('~');
+    if (parts.length === 2) {
+      const start = parts[0].trim();
+      const end = parts[1].trim();
+      
+      // 시작 날짜 포맷팅
+      let formattedStart = start;
+      const startMatch = start.match(/(\d{2})\.(\d{1,2})\.(\d{1,2})/);
+      if (startMatch) {
+        const [_, yy, m, d] = startMatch;
+        formattedStart = `${yy}.${m.padStart(2, '0')}.${d.padStart(2, '0')}.`;
+      }
+      
+      // 종료 날짜 포맷팅
+      let formattedEnd = end;
+      // "04.30", "04.30.", "4.19", "4.19." 형식 모두 처리
+      const endMatch = end.match(/^(\d{1,2})[.\s]*(\d{1,2})/);
+      if (endMatch) {
+        const [_, m, d] = endMatch;
+        formattedEnd = `${m.padStart(2, '0')}.${d.padStart(2, '0')}.`;
+      } else {
+        // "26.04.30" 형식일 수도 있음
+        const fullEndMatch = end.match(/(\d{2})\.(\d{1,2})\.(\d{1,2})/);
+        if (fullEndMatch) {
+          const [_, yy, m, d] = fullEndMatch;
+          formattedEnd = `${yy}.${m.padStart(2, '0')}.${d.padStart(2, '0')}.`;
+        }
+      }
+      
+      return `${formattedStart}~${formattedEnd}`;
+    }
+  }
+  
   // 이미 "yy.mm.dd." 형식인지 확인
   if (/^\d{2}\.\d{1,2}\.\d{1,2}\.?$/.test(str)) {
     // "26.4.20" 또는 "26.4.20." 형식
