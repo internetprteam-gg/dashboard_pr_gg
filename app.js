@@ -850,9 +850,20 @@ function parseMedia(val) {
 function formatTel(val) {
   if (!val) return '—';
   const s = String(val).trim();
+  
+  // 이미 4자리 숫자면 그대로 반환
   if (/^\d{4}$/.test(s)) return s;
+  
+  // "8008-1234" 형식에서 하이픈 뒤 4자리 추출
+  if (s.includes('-')) {
+    const parts = s.split('-');
+    const lastPart = parts[parts.length - 1].trim();
+    if (/^\d{4}$/.test(lastPart)) return lastPart;
+  }
+  
+  // 그 외의 경우 끝 4자리 추출
   const m = s.match(/(\d{4})$/);
-  return m ? m[1] : s;
+  return m ? m[1] : '—';
 }
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
