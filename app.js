@@ -573,7 +573,7 @@ function parseRequestSheet(raw) {
   return dataRows.map(row => ({
     '사업부서':     get(row, idx.dept),
     '사업담당자':   get(row, idx.person),
-    '행정전화':     extractTel(get(row, idx.tel)),
+    '행정전화(뒷4자리)': extractTel(get(row, idx.tel)),
     '신청항목':     parseMediaStr(cleanNum(get(row, idx.media))),
     '지속사업여부': cleanNum(get(row, idx.type)),
     '신청사유':     cleanNum(get(row, idx.reason)),
@@ -613,7 +613,7 @@ function parseCompleteSheet(raw) {
   return dataRows.map(row => ({
     '사업부서':     get(row, idx.dept),
     '사업담당자':   get(row, idx.person),
-    '행정전화':     extractTel(get(row, idx.tel)),
+    '행정전화(뒷4자리)': extractTel(get(row, idx.tel)),
     '사업명':       get(row, idx.name),
     '랜딩페이지':   get(row, idx.url),
     '송출일시_홈페이지배너':  get(row, idx.m1),
@@ -634,8 +634,36 @@ function findCol(headers, candidates) {
 }
 function get(row, idx) { return idx >= 0 ? String(row[idx] || '').trim() : ''; }
 function extractTel(val) {
-  const m = String(val).match(/(\d{4})$/);
-  return m ? m[1] : String(val).replace(/\D/g,'').slice(-4);
+  if (!val) return '';
+  const s = String(val).trim();
+  
+  // 빈 값 체크
+  if (!s || s === '0' || s === '-') return '';
+  
+  // "8008-1234" 형식 (하이픈 포함)
+  if (s.includes('-')) {
+    const parts = s.split('-');
+    const lastPart = parts[parts.length - 1].trim();
+    if (/^\d{4}$/.test(lastPart)) return lastPart;
+  }
+  
+  // "80081234" 형식 (8자리 숫자 - 8008로 시작하는 경우)
+  const numOnly = s.replace(/\D/g, '');
+  if (numOnly.length === 8 && numOnly.startsWith('8008')) {
+    return numOnly.slice(-4);
+  }
+  
+  // 이미 4자리 숫자면 그대로
+  if (/^\d{4}$/.test(s)) return s;
+  
+  // 끝 4자리 숫자 추출
+  const m = s.match(/(\d{4})$/);
+  if (m) return m[1];
+  
+  // 숫자만 추출해서 뒤 4자리
+  if (numOnly.length >= 4) return numOnly.slice(-4);
+  
+  return '';
 }
 function cleanNum(val) {
   if (!val) return '';
