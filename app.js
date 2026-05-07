@@ -753,7 +753,7 @@ function showUploadPreview(requests, completes) {
       </div>
     <div class="preview-table-wrap" style="max-height:200px;overflow-y:auto">
       <table class="preview-table">
-        <thead><tr><th style="width:30px;position:sticky;top:0;background:var(--surface2);z-index:1"></th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업부서</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">담당자</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">신청항목</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업명</th></tr></thead>
+        <thead><tr><th style="width:30px;position:sticky;top:0;background:var(--surface2);z-index:1"></th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업부서</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">담당자</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">내선</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">신청항목</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업명</th></tr></thead>
         <tbody>${requests.map((r, i) => {
           const dupStyle = r._isDup ? 'background:#ffe6e6' : '';
           const dupLabel = r._isDup ? '<span style="color:var(--danger);font-size:10px;font-weight:600;margin-left:4px">중복</span>' : '';
@@ -761,6 +761,7 @@ function showUploadPreview(requests, completes) {
           <td><input type="checkbox" class="dup-chk-req" data-idx="${i}" ${r._selected ? 'checked' : ''} onchange="updateImportBtn()"></td>
           <td>${escHtml(r['사업부서']||'—')}${dupLabel}</td>
           <td>${escHtml(r['사업담당자']||'—')}</td>
+          <td>${escHtml(r['행정전화(뒷4자리)']||'—')}</td>
           <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis">${escHtml(r['신청항목']||'—')}</td>
           <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis">${escHtml(r['사업명']||'—')}</td>
         </tr>`;
@@ -777,7 +778,7 @@ function showUploadPreview(requests, completes) {
       </div>
     <div class="preview-table-wrap" style="max-height:200px;overflow-y:auto">
       <table class="preview-table">
-        <thead><tr><th style="width:30px;position:sticky;top:0;background:var(--surface2);z-index:1"></th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업부서</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">담당자</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업명</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">홈페이지</th></tr></thead>
+        <thead><tr><th style="width:30px;position:sticky;top:0;background:var(--surface2);z-index:1"></th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업부서</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">담당자</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">내선</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">사업명</th><th style="position:sticky;top:0;background:var(--surface2);z-index:1">홈페이지</th></tr></thead>
         <tbody>${completes.map((c, i) => {
           const dupStyle = c._isDup ? 'background:#ffe6e6' : '';
           const dupLabel = c._isDup ? '<span style="color:var(--danger);font-size:10px;font-weight:600;margin-left:4px">중복</span>' : '';
@@ -785,6 +786,7 @@ function showUploadPreview(requests, completes) {
           <td><input type="checkbox" class="dup-chk-comp" data-idx="${i}" ${c._selected ? 'checked' : ''} onchange="updateImportBtn()"></td>
           <td>${escHtml(c['사업부서']||'—')}${dupLabel}</td>
           <td>${escHtml(c['사업담당자']||'—')}</td>
+          <td>${escHtml(c['행정전화(뒷4자리)']||'—')}</td>
           <td style="max-width:160px;overflow:hidden;text-overflow:ellipsis">${escHtml(c['사업명']||'—')}</td>
           <td style="max-width:90px;overflow:hidden;text-overflow:ellipsis">${escHtml(c['송출일시_홈페이지배너']||'—')}</td>
         </tr>`;
@@ -942,6 +944,7 @@ async function submitTransfer() {
     return formatDateToYYMMDD(trimmed);
   };
 
+  // 1. 완료 목록에 추가
   await postData({
     action: 'addComplete', token: TOKEN,
     '사업부서': r['사업부서'] || '',
@@ -956,9 +959,17 @@ async function submitTransfer() {
     '송출일시_e알리미': formatDate(document.getElementById('tr-m5').value),
     '송출일시_경기지역화폐': formatDate(document.getElementById('tr-m6').value),
   });
+
+  // 2. 신청 목록에서 삭제
+  await postData({
+    action: 'deleteRequest',
+    token: TOKEN,
+    id: r.id
+  });
+
   closeModal('modal-transfer');
   transferSourceId = null;
-  showToast('완료 목록에 추가되었습니다', 'success');
+  showToast('완료 처리되었습니다 (신청 목록에서 제거됨)', 'success');
   // 데이터 저장 완료를 위해 약간의 지연 후 로드
   setTimeout(() => loadData(), 500);
 }
